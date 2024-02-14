@@ -1,0 +1,4 @@
+version: STSv1
+mode: [mode:testing]
+mx: [mx]
+max_age: [max_age:1209601]
