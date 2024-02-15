@@ -1,6 +1,14 @@
-name: Configure and maintain the repo
+name: Configure and maintain mta-sts.txt
 
-on: [push]
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - bin/**
+      - ".well-known/**"
+      - .github/workflows/configure.yml
+      - "*.html"
+  workflow_dispatch:
 
 permissions: write-all
 
