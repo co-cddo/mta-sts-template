@@ -27,12 +27,19 @@ jobs:
             | tr '[:upper:]' '[:lower:]' \
           )" >> $GITHUB_ENV
 
-      - run: echo "REPOSITORY_URLNAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+      - run: |
+          echo "REPOSITORY_URLNAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
-      - run: echo "REPOSITORY_OWNER=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
+      - run: |
+          echo "REPOSITORY_OWNER=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
         
-      - run: echo "IS_TEMPLATE=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> $GITHUB_ENV
-      
+      - run: |
+          if [ "$REPOSITORY_NAME" == "mta_sts_template" ]; then
+            echo "IS_TEMPLATE=true" >> $GITHUB_ENV
+          else
+            echo "IS_TEMPLATE=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> $GITHUB_ENV
+          fi
+          
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
