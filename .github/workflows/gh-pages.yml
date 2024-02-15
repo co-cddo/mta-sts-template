@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  workflow_run:
-    workflows: ['Configure and maintain mta-sts.txt']
-    types:
-      - completed
+  push:
+    branches: [ "main" ]
+    paths:
+      - .last-updated.txt
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
