@@ -5,34 +5,65 @@ on: [push]
 permissions: write-all
 
 jobs:
-  config-and-maintain:
-    #if: ${{ !contains (github.repository, '/mta-sts-template') }}
+  configure:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # by default, it uses a depth of 1
           # this fetches all history so that we can read each commit
           fetch-depth: 0
           ref: ${{ github.head_ref }}
           
-      - run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}' | tr '-' '_' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-        shell: bash
+      - run: |
+          echo "REPOSITORY_NAME=$(
+            echo '${{ github.repository }}' \
+            | awk -F '/' '{print $2}' \
+            | tr '-' '_' \
+            | tr '[:upper:]' '[:lower:]' \
+          )" >> $GITHUB_ENV
 
-      - run: echo "REPOSITORY_URLNAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
-        shell: bash
+      - run: |
+          echo "REPOSITORY_URLNAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
-      - run: echo "REPOSITORY_OWNER=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
-        shell: bash
+      - run: |
+          echo "REPOSITORY_OWNER=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
         
-      - name: Is this still a template
-        id: is_template
-        run: echo "::set-output name=is_template::$(ls .github/template.yml &> /dev/null && echo true || echo false)"
+      - run: |
+          if [ "$REPOSITORY_NAME" == "mta_sts_template" ]; then
+            echo "IS_TEMPLATE=true" >> $GITHUB_ENV
+          else
+            echo "IS_TEMPLATE=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> $GITHUB_ENV
+          fi
+          
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-      - name: Rename the project
-        # if: steps.is_template.outputs.is_template == 'true'
+      - name: Test configuration
+        if: env.IS_TEMPLATE == 'true'
+        working-directory: bin/
         run: |
           echo "Repo owner: ${{ env.REPOSITORY_OWNER }}"
           echo "Repo name: ${{ env.REPOSITORY_NAME }}"
           echo "Repo URL: ${{ env.REPOSITORY_URLNAME }}"
-          echo "Template: ${{ steps.is_template.outputs.is_template }}"
+          echo "Template: ${{ env.IS_TEMPLATE }}"
+
+          python -m pip install -r requirements.txt
+
+          export SKIP_TLS_CHECK="False"
+          export MTASTS_DOMAIN="digital.cabinet-office.gov.uk"
+          python configure.py
+
+          cat ../CNAME
+          cat ../.well-known/*
+
+      - name: Push changes
+        if: env.IS_TEMPLATE != 'true'
+        working-directory: bin/
+        run: |
+          echo "Would push changes..."
