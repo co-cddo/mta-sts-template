@@ -54,8 +54,6 @@ jobs:
           echo "Template: ${{ env.IS_TEMPLATE }}"
 
           python -m pip install -r requirements.txt
-
-          export SKIP_TLS_CHECK="False"
           export MTASTS_DOMAIN="mta-sts.digital.cabinet-office.gov.uk"
           python configure.py
 
