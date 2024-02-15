@@ -21,7 +21,9 @@ mtasts_domain = mtasts_domain.lower()
 domain_regex = r"^mta-sts\.(?P<domain>[a-z0-9\-\.]+\.[a-z0-9]+)$"
 domain_match = re.match(domain_regex, mtasts_domain)
 if not domain_match:
-    raise Exception("Invalid domain name")
+    raise Exception(
+        "Invalid domain name - ensure format is 'mta-sts.FQDN', replacing 'FQDN' with domain where MX records are present"
+    )
 
 mail_domain = domain_match.group("domain")
 
