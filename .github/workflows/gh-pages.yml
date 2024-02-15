@@ -18,10 +18,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
-  build:
+  check:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      is_template: ${{ steps.is_template.outputs.is_template }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - run: |
           echo "REPOSITORY_NAME=$(
             echo '${{ github.repository }}' \
@@ -29,30 +33,36 @@ jobs:
             | tr '-' '_' \
             | tr '[:upper:]' '[:lower:]' \
           )" >> $GITHUB_ENV
-      - run: |
-          if [ "$REPOSITORY_NAME" == "mta_sts_template" ]; then
-            echo "IS_TEMPLATE=true" >> $GITHUB_ENV
-          else
-            echo "IS_TEMPLATE=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> $GITHUB_ENV
-          fi
-      - name: Quit if template
-        if: env.IS_TEMPLATE == 'true'
+      - id: is_template
         run: |
-          exit 1
+          if [ "$REPOSITORY_NAME" == "mta_sts_template" ]; then
+            echo "is_template=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_template=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    if: ${{ needs.check.outputs.is_template == 'false' }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
+        if: env.IS_TEMPLATE != 'true'
         uses: actions/configure-pages@v4
       - name: Build with Jekyll
+        if: env.IS_TEMPLATE != 'true'
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
       - name: Upload artifact
+        if: env.IS_TEMPLATE != 'true'
         uses: actions/upload-pages-artifact@v3
 
   # Deployment job
   deploy:
+    if: ${{ needs.check.outputs.is_template == 'false' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
