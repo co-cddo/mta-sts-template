@@ -76,8 +76,8 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           
-          date > time.txt
+          date > .last-updated.txt
           
-          git add time.txt
+          git add .last-updated.txt
           git commit -m "new date commit"
           git push origin main --force
