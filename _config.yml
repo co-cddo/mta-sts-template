@@ -1,4 +1,6 @@
-include: [".well-known"]
+include:
+ - ".well-known"
 exclude:
- - bin/
+ - "bin/"
+ - ".github/"
  
