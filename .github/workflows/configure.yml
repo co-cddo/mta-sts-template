@@ -46,6 +46,7 @@ jobs:
 
       - name: Test configuration
         if: env.IS_TEMPLATE == 'true'
+        working-directory: bin/
         run: |
           echo "Repo owner: ${{ env.REPOSITORY_OWNER }}"
           echo "Repo name: ${{ env.REPOSITORY_NAME }}"
@@ -56,12 +57,13 @@ jobs:
 
           export SKIP_TLS_CHECK="False"
           export MTASTS_DOMAIN="digital.cabinet-office.gov.uk"
-          python bin/configure.py
+          python configure.py
 
-          cat CNAME
-          cat .well-known/*
+          cat ../CNAME
+          cat ../.well-known/*
 
       - name: Push changes
         if: env.IS_TEMPLATE != 'true'
+        working-directory: bin/
         run: |
           echo "Would push changes..."
