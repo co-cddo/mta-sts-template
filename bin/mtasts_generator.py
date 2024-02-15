@@ -17,11 +17,6 @@ def check_mail_server(mail_server: str):
             try:
                 server.connect(mail_server.strip(".") + ".", port=port)
                 server.starttls()
-                print(port, server)
-                cert = ssl.DER_cert_to_PEM_cert(
-                    server.sock.getpeercert(binary_form=True)
-                )
-                print(port, cert)
                 res = True
             except Exception as err:
                 print(
