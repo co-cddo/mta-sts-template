@@ -70,9 +70,10 @@ jobs:
         run: |
           python -m pip install -r requirements.txt
           python configure.py
-          date > .last-updated.txt
+          date > ../.well-known/.last-updated.txt
 
       - uses: stefanzweifel/git-auto-commit-action@v4
+        if: env.IS_TEMPLATE != 'true'
         with:
           commit_message: "Automatically deployed using Actions ✅"
           push_options: --force
