@@ -28,12 +28,6 @@ jobs:
           )" >> $GITHUB_ENV
 
       - run: |
-          echo "REPOSITORY_URLNAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
-
-      - run: |
-          echo "REPOSITORY_OWNER=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
-        
-      - run: |
           if [ "$REPOSITORY_NAME" == "mta_sts_template" ]; then
             echo "IS_TEMPLATE=true" >> $GITHUB_ENV
           else
@@ -49,19 +43,22 @@ jobs:
         working-directory: bin/
         run: |
           echo "Repo owner: ${{ env.REPOSITORY_OWNER }}"
-          echo "Repo name: ${{ env.REPOSITORY_NAME }}"
-          echo "Repo URL: ${{ env.REPOSITORY_URLNAME }}"
           echo "Template: ${{ env.IS_TEMPLATE }}"
 
           python -m pip install -r requirements.txt
           export MTASTS_DOMAIN="mta-sts.digital.cabinet-office.gov.uk"
           python configure.py
 
+          echo "cat CNAME:"
           cat ../CNAME
+
+          echo ""
+          echo "cat .well-known:"
           cat ../.well-known/*
 
       - name: Push changes
         if: env.IS_TEMPLATE != 'true'
         working-directory: bin/
         run: |
-          echo "Would push changes..."
+          python -m pip install -r requirements.txt
+          python configure.py
