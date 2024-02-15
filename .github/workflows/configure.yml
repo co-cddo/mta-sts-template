@@ -52,6 +52,8 @@ jobs:
           echo "Repo URL: ${{ env.REPOSITORY_URLNAME }}"
           echo "Template: ${{ env.IS_TEMPLATE }}"
 
+          python -m pip install -r requirements.txt
+
           export SKIP_TLS_CHECK="False"
           export MTASTS_DOMAIN="digital.cabinet-office.gov.uk"
           python bin/configure.py
