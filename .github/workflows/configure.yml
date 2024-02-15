@@ -70,14 +70,9 @@ jobs:
         run: |
           python -m pip install -r requirements.txt
           python configure.py
-
-      - name: Commit test
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          
           date > .last-updated.txt
-          
-          git add .last-updated.txt
-          git commit -m "new date commit"
-          git push origin main --force
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Automatically deployed using Actions ✅"
+          push_options: --force
