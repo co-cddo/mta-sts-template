@@ -15,7 +15,7 @@ By default, this repo looks up your MX records and sets the mta-sts to `testing`
     - You may need to select the `main` branch and `/ root` in [Settings → Pages](../../settings/pages)
 5. Configure [your DNS to point to GitHub](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
     - If deploying in [co-cddo](https://github.com/co-cddo), use the CNAME `co-cddo.github.io` (`mta-sts 60 CNAME co-cddo.github.io.`)
-6. Check the `Custom domain` in [Settings → Pages](../../settings/pages) and ensure `Enforce HTTPS` is checked
+6. Check the `Custom domain` in [Settings → Pages](../../settings/pages) and ensure `Enforce HTTPS` is checked (this can take a few hours)
 7. Check your deployment by visiting the domain, where you should get automatically redirected to `/.well-known/mta-sts.txt` (e.g. <https://mta-sts.gc3.security.gov.uk>)
 8. Set your `_mta-sts` TXT record, like `_mta-sts 60 TXT "v=STSv1; id=20240215"` (where the id value is set to the current date, you'll need to change this if `mta-sts.txt` is updated)
 
