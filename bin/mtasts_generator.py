@@ -7,6 +7,31 @@ SKIP_TLS_CHECK = os.getenv("SKIP_TLS_CHECK", "true").lower()[0] in ["t", "1"]
 
 
 def check_mail_server(mail_server: str):
+    a_records = False
+    try:
+        a_records = len(dns.resolver.resolve(mail_server, "A").rrset) > 0
+    except Exception as err:
+        print(
+            "check_mail_server: a_records:",
+            mail_server,
+            "error:",
+            err,
+        )
+
+    aaaa_records = False
+    try:
+        aaaa_records = len(dns.resolver.resolve(mail_server, "AAAA").rrset) > 0
+    except Exception as err:
+        print(
+            "check_mail_server: aaaa_records:",
+            mail_server,
+            "error:",
+            err,
+        )
+
+    if not a_records and not aaaa_records:
+        return False
+
     if SKIP_TLS_CHECK:
         return True
 
