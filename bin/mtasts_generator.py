@@ -80,9 +80,10 @@ def write_txt_lines(lines: list, txt_path: str = "../.well-known/mta-sts.txt"):
     success = False
     if lines:
         try:
-            f = open(txt_path, "w")
-            f.write("\n".join(lines))
-            f.close()
+            with open(txt_path, "wb") as file:
+                linebytes = "\n".join(lines).replace("\n", "\r\n").encode()
+                print("linebytes:", linebytes)
+                file.write(linebytes)
             success = True
         except Exception as e:
             print("write_txt_lines: error:", e)
