@@ -50,19 +50,18 @@ jobs:
         if: env.IS_TEMPLATE == 'true'
         working-directory: bin/
         run: |
-          echo "Repo owner: ${{ env.REPOSITORY_OWNER }}"
+          echo "Repo name: ${{ env.REPOSITORY_NAME }}"
           echo "Template: ${{ env.IS_TEMPLATE }}"
 
           python -m pip install -r requirements.txt
           export MTASTS_DOMAIN="mta-sts.digital.cabinet-office.gov.uk"
           python configure.py
 
-          echo "cat CNAME:"
+          echo -e "\ncat CNAME:"
           cat ../CNAME
 
-          echo ""
-          echo "cat .well-known:"
-          cat ../.well-known/*
+          echo -e "\ncat .well-known:"
+          cat -A ../.well-known/*
 
       - name: Push changes
         if: env.IS_TEMPLATE != 'true'
