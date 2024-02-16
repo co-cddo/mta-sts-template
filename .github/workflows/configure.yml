@@ -75,4 +75,3 @@ jobs:
         if: env.IS_TEMPLATE != 'true'
         with:
           commit_message: "Automatically deployed using Actions ✅"
-          push_options: --force
