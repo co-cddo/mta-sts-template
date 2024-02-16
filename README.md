@@ -26,4 +26,4 @@ You can find more about MTA-STS here:
 ## Example deployments
 - <https://github.com/co-cddo/mta-sts.gc3.security.gov.uk>
 - <https://github.com/co-cddo/mta-sts.digital.cabinet-office.gov.uk>
-- <https://github.com/co-cddo/mta-sts.cabinetoffice.gov.uk>
+- <https://github.com/cabinetoffice/mta-sts.cabinetoffice.gov.uk>
