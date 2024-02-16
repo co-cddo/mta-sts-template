@@ -11,6 +11,7 @@ By default, this repo looks up your MX records and sets the mta-sts to `testing`
 1. Publish a TLS-RPT record, like `_smtp._tls 300 TXT "v=TLSRPTv1;rua=mailto:tls-rua@mailcheck.service.ncsc.gov.uk"`
 2. Use [this template](https://github.com/new?template_name=mta-sts-template&template_owner=co-cddo), making sure to set the new repository name to the full mta-sts domain, like `mta-sts.gc3.security.gov.uk`
 3. Observe the [Actions](../../actions) to make sure [configure.yml](../../actions/workflows/configure.yml) and [gh-pages.yml](../../actions/workflows/gh-pages.yml) deploy correctly
+    - Make sure the build and deployment source is set to GitHub Actions in [Settings → Pages](../../settings/pages)
     - You may need to select the `main` branch and `/ root` in [Settings → Pages](../../settings/pages)
 5. Configure [your DNS to point to GitHub](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
     - If deploying in [co-cddo](https://github.com/co-cddo), use the CNAME `co-cddo.github.io` (`mta-sts 60 CNAME co-cddo.github.io.`)
