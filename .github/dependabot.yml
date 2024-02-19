@@ -9,10 +9,10 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
 
   # Maintain dependencies for python and pip
   - package-ecosystem: "pip"
     directory: "bin/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
