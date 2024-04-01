@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         if: env.IS_TEMPLATE != 'true'
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       - name: Build with Jekyll
         if: env.IS_TEMPLATE != 'true'
         uses: actions/jekyll-build-pages@v1
