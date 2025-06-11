@@ -71,7 +71,7 @@ jobs:
           python configure.py
           date > ../.well-known/last-updated.txt
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v6
         if: env.IS_TEMPLATE != 'true'
         with:
           commit_message: "Automatically deployed using Actions ✅"
