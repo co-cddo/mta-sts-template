@@ -27,7 +27,7 @@ jobs:
       is_template: ${{ steps.is_template.outputs.is_template }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - run: |
           echo "REPOSITORY_NAME=$(
             echo '${{ github.repository }}' \
@@ -49,7 +49,7 @@ jobs:
     needs: check
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Pages
         if: env.IS_TEMPLATE != 'true'
         uses: actions/configure-pages@v5
