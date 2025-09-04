@@ -42,7 +42,7 @@ jobs:
             echo "IS_TEMPLATE=$(ls .github/template.yml &> /dev/null && echo true || echo false)" >> $GITHUB_ENV
           fi
           
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
